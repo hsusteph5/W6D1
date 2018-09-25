@@ -106,15 +106,18 @@ function sumThree(num1, num2, num3) {
 }
 
 Function.prototype.curry = function(numArgs) {
-  const numbers = [];
+  let numbers = [];
   const that = this; // that = sumThree function
-  return function innerCurry(arg1) {
+  return function _curry(arg1) {
     numbers.push(arg1);
     if(numbers.length === numArgs){ //[4, 20, 6]
       // return that(...numbers); //sumThree(4, 20, 6)
-      return that.apply(null, numbers);
+      let oldNumbers = numbers;
+      numbers = [];
+      return that.apply(null, oldNumbers); //function doesn't have this
+
     } else {
-      return innerCurry;
+      return _curry;
     }
   };
 };
